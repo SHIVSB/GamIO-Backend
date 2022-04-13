@@ -6,7 +6,7 @@ locationController.getCity = async (req, res) => {
   var options = {
     provider: "google",
     httpAdapter: "https", // Default
-    apiKey: "AIzaSyCZNlij87KQYPzTOGJ-PsgCirnOnUNv5-Q", // for Mapquest, OpenCage, Google Premier
+    apiKey: process.env.GOOGLE_MAPS_API_KEY, // for Mapquest, OpenCage, Google Premier
     formatter: "json", // 'gpx', 'string', ...
   };
 
