@@ -71,7 +71,7 @@ gamesController.addToPlaying = expressAsyncHandler(async (req, res) => {
   const target = await Games.findById(gameid);
 
   const alreadyFollowing = target.players.find(
-    (user) => user.toString() == gameid.toString()
+    (user) => user.toString() == _id.toString()
   );
 
   if (alreadyFollowing) {

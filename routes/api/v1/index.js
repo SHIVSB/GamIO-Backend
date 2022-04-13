@@ -4,6 +4,7 @@ const authController = require("../../../src/utils/authentication");
 const userController = require("../../../src/controllers/userController.js");
 const PhotoMiddleware = require("../../../src/middlewares/photoUploads");
 const gamesController = require("../../../src/controllers/gamesController/gamesController")
+const locationController = require("../../../src/utils/geocoder")
 // const postController = require("../../../src/controllers/postController");
 
 router.post("/signup", userController.signup);
@@ -22,12 +23,16 @@ router.post("/sendmail", authController.authMiddleware, userController.generateV
 router.post("/verifyaccount", authController.authMiddleware, userController.accountVerificationController);
 router.post("/forgotpassword", userController.forgotPasswordToken);
 router.put("/resetpassword", userController.passwordReset);
+router.post("/logout", authController.authMiddleware, userController.logout);
 router.put("/profilephotoupload", authController.authMiddleware, PhotoMiddleware.photoUpload.single("image"), PhotoMiddleware.profilePhotoSize, userController.profilePhotoUpload);
 router.post("/addgame", gamesController.addGame);
 router.get("/all/allgames", authController.authMiddleware, gamesController.allGames);
 router.get("/game/gamedetails/:id", gamesController.gameDetail);
 router.get("/players/:gameid", gamesController.players);
 router.post("/add/addtoplaying", authController.authMiddleware, gamesController.addToPlaying);
+router.get("/all/allplayers", authController.authMiddleware ,userController.getallusers);
+router.get("/location/getcity", locationController.getCity)
+
 // router.post("/posts", authController.authMiddleware, PhotoMiddleware.photoUpload.single("image"), PhotoMiddleware.postImgResize, postController.createPost)
 // router.post("/allposts", authController.authMiddleware, postController.fetchAllPosts);
 
