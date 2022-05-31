@@ -158,4 +158,30 @@ gamesController.players = expressAsyncHandler(async (req, res) => {
   }
 });
 
+gamesController.filterByCategory = expressAsyncHandler(async (req, res) => {
+  let responseData = {
+    msg: "Error in filtering the search",
+    success: false,
+    result: "",
+  };
+
+  const {genre} = req.params;
+
+  try {
+    console.log(genre);
+    const filteredGames = await Games.find({
+      genre: { $regex: genre, $options: "si" },
+    });
+
+    responseData.msg = "Games categorized successfully";
+    responseData.success = true;
+    responseData.result = filteredGames;
+
+    return res.status(200).send(responseData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(responseData);
+  }
+});
+
 module.exports = gamesController;
