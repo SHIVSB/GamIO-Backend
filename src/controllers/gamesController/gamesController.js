@@ -74,9 +74,42 @@ gamesController.addToPlaying = expressAsyncHandler(async (req, res) => {
     (user) => user.toString() == _id.toString()
   );
 
+  console.log(alreadyFollowing);
+
   if (alreadyFollowing) {
-    console.log("Already following");
-    return res.status(200).send("Already following");
+    try {
+      // console.log(_id);
+      // console.log(gameid);
+      await Games.findByIdAndUpdate(
+        gameid,
+        {
+          $pull: { players: _id },
+        },
+        {
+          new: true,
+        }
+      );
+
+      await User.findByIdAndUpdate(
+        _id,
+        {
+          $pull: { games: gameid },
+        },
+        {
+          new: true,
+        }
+      );
+
+      responseData.msg = "Successfully removed from the playing list";
+      responseData.success = true;
+      responseData.result = "";
+
+      return res.status(200).send(responseData);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(responseData);
+    }
+    return res.status(500).send("Already following");
   } else {
     try {
       // console.log(_id);
@@ -165,7 +198,7 @@ gamesController.filterByCategory = expressAsyncHandler(async (req, res) => {
     result: "",
   };
 
-  const {genre} = req.params;
+  const { genre } = req.params;
 
   try {
     console.log(genre);

@@ -24,13 +24,13 @@ router.post("/verifyaccount", authController.authMiddleware, userController.acco
 router.post("/forgotpassword", userController.forgotPasswordToken);
 router.put("/resetpassword", userController.passwordReset);
 router.post("/logout", authController.authMiddleware, userController.logout);
-router.put("/profilephotoupload", authController.authMiddleware, PhotoMiddleware.photoUpload.single("image"), PhotoMiddleware.profilePhotoSize, userController.profilePhotoUpload);
+router.post("/profile/profilephotoupload", authController.authMiddleware, PhotoMiddleware.photoUpload.single("image"), PhotoMiddleware.profilePhotoSize, userController.profilePhotoUpload);
 router.post("/addgame", gamesController.addGame);
 router.get("/all/allgames", authController.authMiddleware, gamesController.allGames);
 router.get("/game/gamedetails/:id", gamesController.gameDetail);
 router.get("/players/:gameid", gamesController.players);
 router.get("/filter/games/:genre",authController.authMiddleware, gamesController.filterByCategory)
-router.post("/add/addtoplaying", authController.authMiddleware, gamesController.addToPlaying);
+router.post("/add/game/addtoplaying", authController.authMiddleware, gamesController.addToPlaying);
 router.get("/all/allplayers", authController.authMiddleware ,userController.getallusers);
 router.get("/location/getcity", locationController.getCity);
 router.post("/post",authController.authMiddleware,postController.createPost);
@@ -40,6 +40,7 @@ router.put("/post/:id",authController.authMiddleware, postController.updatePost)
 router.delete("/post/:id", authController.authMiddleware,postController.deletePost);
 router.post("/likepost",authController.authMiddleware,postController.toggleAddLiketoPost);
 router.post("/dislikepost",authController.authMiddleware,postController.toggleAddDisliketoPost);
+router.get("/user/getGamesFollowed",authController.authMiddleware,userController.getGamesFollowed);
 
 // router.post("/posts", authController.authMiddleware, PhotoMiddleware.photoUpload.single("image"), PhotoMiddleware.postImgResize, postController.createPost)
 // router.post("/allposts", authController.authMiddleware, postController.fetchAllPosts);

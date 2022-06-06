@@ -43,7 +43,7 @@ userController.signup = expressAsyncHandler(async (req, res) => {
   }
 });
 
-userController.signin = async (req, res) => {
+userController.signin = expressAsyncHandler(async (req, res) => {
   let data = req.body;
 
   let responseData = {
@@ -58,7 +58,7 @@ userController.signin = async (req, res) => {
       // console.log(data.email);
       //console.log(data.password);
 
-      if (userFound.isPasswordMatched(data.password)) {
+      if (await userFound.isPasswordMatched(data.password)) {
         await User.findByIdAndUpdate(
           userFound._id,
           {
@@ -87,7 +87,7 @@ userController.signin = async (req, res) => {
 
     return res.status(500).send(responseData);
   }
-};
+});
 
 userController.logout = expressAsyncHandler(async (req, res) => {
   let responseData = {
@@ -533,7 +533,7 @@ userController.passwordReset = expressAsyncHandler(async (req, res) => {
 //profile photo upload controller
 
 userController.profilePhotoUpload = expressAsyncHandler(async (req, res) => {
-  // console.log(req.file);
+  console.log(req.file);
 
   //console.log(req.user);
 
@@ -568,6 +568,28 @@ userController.profilePhotoUpload = expressAsyncHandler(async (req, res) => {
   // };
 
   // return res.status(200).send(responseData);
+});
+
+userController.getGamesFollowed = expressAsyncHandler(async (req, res) => {
+  let responseData = {
+    msg: "Error in getting the games followed",
+    success: false,
+    result: "",
+  };
+
+  const { _id } = req.user;
+
+  try {
+    const data = await User.findById({ _id });
+    responseData.msg = "Games fetched successfully";
+    responseData.success = true;
+    responseData.result = data.games;
+
+    return res.status(200).send(responseData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(responseData);
+  }
 });
 
 module.exports = userController;
